@@ -8,18 +8,18 @@ var glob = require('glob')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var relative = require('relative')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function getEntry (rootSrc) {
+function getEntry(rootSrc) {
   var map = {};
   glob.sync(rootSrc + '/pages/**/main.js')
-  .forEach(file => {
-    var key = relative(rootSrc, file).replace('.js', '');
-    map[key] = file;
-  })
-   return map;
+    .forEach(file => {
+      var key = relative(rootSrc, file).replace('.js', '');
+      map[key] = file;
+    })
+  return map;
 }
 
 const appEntry = { app: resolve('./src/main.js') }
@@ -56,6 +56,8 @@ module.exports = {
         loader: 'mpvue-loader',
         options: vueLoaderConfig
       },
+      { test: /\.less$/,
+       loader: "style-loader!css-loader!less-loader", },
       {
         test: /\.js$/,
         include: [resolve('src'), resolve('test')],
@@ -63,7 +65,7 @@ module.exports = {
           'babel-loader',
           {
             loader: 'mpvue-loader',
-            options: Object.assign({checkMPEntry: true}, vueLoaderConfig)
+            options: Object.assign({ checkMPEntry: true }, vueLoaderConfig)
           },
         ]
       },
@@ -99,8 +101,8 @@ module.exports = {
       from: '**/*.json',
       to: ''
     }], {
-      context: 'src/'
-    }),
+        context: 'src/'
+      }),
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),

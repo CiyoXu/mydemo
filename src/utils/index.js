@@ -17,8 +17,23 @@ export function formatTime (date) {
 
   return `${t1} ${t2}`
 }
-
+function thenAjax (opt) {
+  return new Promise((resolve,reject)=>{
+    var reqTask = wx.request({
+      url:"https://autumnfish.cn/wx/"+opt.url,
+      data:opt.data || {},
+      header:opt.header || {'content-type':'application/json'},
+      method:opt.method || 'GET',
+      dataType:opt.dataType || 'json',
+      responseType:opt.responseType || 'text',
+      success: resolve,
+      fail:reject,
+      complete: ()=>{}
+    });
+  })
+}
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  thenAjax
 }

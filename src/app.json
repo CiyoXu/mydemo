@@ -3,17 +3,18 @@
     "pages/index/main",
     "pages/fenLei/main",
     "pages/car/main",
-    "pages/me/main"
+    "pages/me/main",
+    "pages/sousuo/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#ff2d4a",
+    "navigationBarTitleText": "品忧购",
+    "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "color": "#000",
-    "selectedColor": "red",
+    "selectedColor": "#e22018",
     "list": [
       {
         "pagePath": "pages/index/main",
@@ -30,13 +31,13 @@
       {
         "pagePath": "pages/car/main",
         "text": "购物车",
-        "iconPath": "/static/images/icon/icon_cart_active@3x.png",
+        "iconPath": "/static/images/icon/icon_cart@3x.png",
         "selectedIconPath": "/static/images/icon/icon_cart_active@3x.png"
       },
       {
         "pagePath": "pages/me/main",
         "text": "我的",
-        "iconPath": "/static/images/icon/icon_me_active@3x.png",
+        "iconPath": "/static/images/icon/icon_me@3x.png",
         "selectedIconPath": "/static/images/icon/icon_me_active@3x.png"
       }
     ]
