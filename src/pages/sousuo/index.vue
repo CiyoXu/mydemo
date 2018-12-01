@@ -17,7 +17,8 @@
            </li>
          </ul>
        </div>
-       <div class="product"  v-show="goodList.length != 0 " >
+       <!--  -->
+       <div class="product" v-show="goodList.length != 0 "  >
          <div class="nav">
            <div class="text" @click="change(0)" :class="{active:selectIndex==0}">综合</div>
            <div class="text" @click="change(1)" :class="{active:selectIndex==1}">销量</div>
@@ -29,7 +30,7 @@
            </div>          
          </div>
          <ul>
-           <li class="goods" v-for="(item, index) in product" :key="index">
+           <li class="goods" v-for="(item, index) in product" :key="index" @click="detail(item.goods_id)">
               <img :src="item.goods_small_logo" alt="">
            <div class="right">
              <span class="title">
@@ -55,11 +56,13 @@ export default {
       //商品数据
       goodList: [],
       // 保存原来的商品数据
-      defineGoodsList:[],
+      defineGoodsList: [],
       //选择的条件
       selectIndex: 0,
       // 价格排序
-      price: true
+      price: true,
+      //顶部的选择分类固定
+    
     };
   },
   // 固定排序选择
@@ -67,6 +70,7 @@ export default {
   //   // console.log(e)
   //   if(e.scrollTop>60){
 
+      
   //   }
   // },
   onLoad() {
@@ -87,12 +91,12 @@ export default {
   },
   methods: {
     // 抽取出来调数据的方法
-    getData(){
+    getData() {
       wx.showLoading({
-        title:"加载中...",
-        mask:true
-      })
-       tool
+        title: "加载中...",
+        mask: true
+      });
+      tool
         .thenAjax({
           url: `api/public/v1/goods/search?query=${this.search}`
         })
@@ -101,11 +105,10 @@ export default {
           this.goodList = res.data.message.goods;
 
           // 保存默认的商品数据
-          this.defineGoodsList = res.data.message.goods.concat([])
+          this.defineGoodsList = res.data.message.goods.concat([]);
 
           // 关闭lodding
           wx.hideLoading();
-          
         });
     },
     sub() {
@@ -132,14 +135,14 @@ export default {
       });
 
       //搜索后调接口
-     this.getData()
+      this.getData();
     },
     // 清空输入框的文本
     cancel() {
       // console.log("取消")
       this.search = "";
-      this.goodList=[]
-      this.defineGoodsList=[]
+      this.goodList = [];
+      this.defineGoodsList = [];
     },
     // 清空
     clear() {
@@ -175,15 +178,20 @@ export default {
     //点击切换
     change(index) {
       this.selectIndex = index;
-      //价格切换    
-      this.price = !this.price     
+      //价格切换
+      this.price = !this.price;
     },
     // 点击历史记录搜索
-    searchHistory(item){
+    searchHistory(item) {
       // console.log(item)
-      this.search=item
-      this.getData()
-
+      this.search = item;
+      this.getData();
+    },
+    detail(id){
+      // console.log(id)  
+      //添加新页面需要重新运行一下代码,不然进入的页面没有东西
+      wx.navigateTo({ url: `/pages/detail/main?goods_id=${id}` });
+  
     }
   },
   computed: {
@@ -198,23 +206,24 @@ export default {
           return a.cat_id - b.cat_id;
         });
         return this.goodList;
-      }else if(this.selectIndex ==2){
+      } else if (this.selectIndex == 2) {
         this.goodList.sort((a, b) => {
           // console.log(a)
           // console.log(b)
-          if(this.price==true){
+          if (this.price == true) {
             return a.goods_price - b.goods_price;
-          }else{
+          } else {
             return b.goods_price - a.goods_price;
-          }         
+          }
         });
-         return this.goodList;
+        return this.goodList;
       }
     }
-  }
+  },
+  
 };
 </script>
-<style lang="less">
+<style  lang="less">
 page {
   padding-top: 0;
 }

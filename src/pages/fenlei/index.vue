@@ -60,6 +60,9 @@ export default {
     check(index) {
       // console.log(index)
       this.sleccter = index;
+    },
+    detail(){
+
     }
   }
 };
@@ -74,12 +77,14 @@ a {
 }
 page {
   height: 100%;
+  padding-top: 103rpx;
 }
 page > view {
   height: 100%;
   display: flex;
 }
 .left {
+  
   height: 100%;
   width: 200rpx;
   scroll-view {

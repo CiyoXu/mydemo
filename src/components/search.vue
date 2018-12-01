@@ -19,7 +19,7 @@ export default {
 
 <style lang="less">
 page {
-  padding-top: 100rpx;
+  // padding-top: 100rpx;
 }
 .header {
   background-color: #ff2d4a;

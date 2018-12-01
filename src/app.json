@@ -4,7 +4,8 @@
     "pages/fenLei/main",
     "pages/car/main",
     "pages/me/main",
-    "pages/sousuo/main"
+    "pages/sousuo/main",
+    "pages/detail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

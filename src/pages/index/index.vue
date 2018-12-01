@@ -29,6 +29,7 @@
     </div>
 
     <!-- 底部 -->
+    
     <div class="footer">
       <span class="iconfont icon-xiao"></span>我是有底线的
     </div>
@@ -83,7 +84,7 @@ export default {
       });
   },
   onPageScroll(e){
-    console.log(e)
+ 
     if(e.scrollTop>100){
       this.isshow=true
     }else{
@@ -106,6 +107,7 @@ export default {
 
 // 轮播图
 swiper {
+  padding-top: 100rpx;
   height: 340rpx;
   image {
     display: block;
