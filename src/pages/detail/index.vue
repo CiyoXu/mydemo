@@ -1,69 +1,69 @@
 <template>
+  <div>
     <div>
-        <div>
-            <swiper class="swiper" indicator-dots autoplay circular>
-                <block v-for="(item, index) in goodsInfo.pics" :key="item.goods_id">
-                    <swiper-item @click="preview(index)">
-                        <image :src="item.pics_mid"></image>
-                    </swiper-item>
-                </block>
-            </swiper>
-        </div>
-        <div class="price">
-            <span class="fuhao">¥&nbsp;</span>
-            <span>{{goodsInfo.goods_price}}</span>
-        </div>
-        <div class="title">
-            <div class="left">
-                <span class="name">{{goodsInfo.goods_name}}</span>
-                <span class="expressage">快递:&nbsp;&nbsp;&nbsp;&nbsp;免运费</span>
-            </div>
-            <div class="right">
-                <span class="iconfont icon-shoucang"></span>
-                <span class="text">收藏</span>
-            </div>
-        </div>
-        <div class="promotion">
-            <span>促销</span>
-            <span id="num">满1000减999</span>
-        </div>
-        <div class="promotion">
-            <span>已选</span>
-            <span class="slecet">黑色/S/1件</span>
-        </div>
-        <div class="promotion" @click="location">
-            <span>送至</span>
-            <span class="address">{{address}}</span>
-            <span class="iconfont icon-jiantouyou"></span>
-        </div>
-        <div class="tab">
-            <div class="opt" @click="change(0)" :class="{active:selecte == 0}">图文介绍</div>
-            <div class="opt" @click="change(1)" :class="{active:selecte == 1}">规格参数</div>
-        </div>
-        <div class="content" v-show="selecte == 0">
-            <div class="item">
-                <wxParse :content="goodsInfo.goods_introduce" @preview="preview" @navigate="navigate" />
-            </div>
-        </div>
-        <div class="content" v-show="selecte == 1">
-            <div v-for="(item, index) in goodsInfo.attrs" :key="item.goods_id" class="row">
-                <div class="col">{{item.attr_name}}</div>
-                <div class="col">{{item.attr_value}}</div>
-            </div>
-        </div>
-        <div class="control-box">
-            <div>
-                <span class='iconfont icon-kefu'></span>
-                联系客服
-            </div>
-            <div @click="toCart" >
-                <span class='iconfont icon-gouwuche'></span>
-                购物车
-            </div>
-            <button @click="addCart">加入购物车</button>
-            <button>立即购买</button>
-        </div>
+      <swiper class="swiper" indicator-dots autoplay circular>
+        <block v-for="(item, index) in goodsInfo.pics" :key="item.goods_id">
+          <swiper-item @click="preview(index)">
+            <image :src="item.pics_mid"></image>
+          </swiper-item>
+        </block>
+      </swiper>
     </div>
+    <div class="price">
+      <span class="fuhao">¥&nbsp;</span>
+      <span>{{goodsInfo.goods_price}}</span>
+    </div>
+    <div class="title">
+      <div class="left">
+        <span class="name">{{goodsInfo.goods_name}}</span>
+        <span class="expressage">快递:&nbsp;&nbsp;&nbsp;免运费</span>
+      </div>
+      <div class="right">
+        <span class="iconfont icon-shoucang"></span>
+        <span class="text">收藏</span>
+      </div>
+    </div>
+    <div class="promotion">
+      <span>促销</span>
+      <span id="num">满1000减999</span>
+    </div>
+    <div class="promotion">
+      <span>已选</span>
+      <span class="slecet">黑色/S/1件</span>
+    </div>
+    <div class="promotion">
+      <span>送至</span>
+      <span id="address"  @click="location">{{address}}</span>
+      <span class="iconfont icon-jiantouyou" @click="location"></span>
+    </div>
+    <div class="tab">
+      <div class="opt" @click="change(0)" :class="{active:selecte == 0}">图文介绍</div>
+      <div class="opt" @click="change(1)" :class="{active:selecte == 1}">规格参数</div>
+    </div>
+    <div class="content" v-show="selecte == 0">
+      <div class="item">
+        <wxParse :content="goodsInfo.goods_introduce" @preview="preview" @navigate="navigate" />
+      </div>
+    </div>
+    <div class="content" v-show="selecte == 1">
+      <div v-for="(item, index) in goodsInfo.attrs" :key="item.goods_id" class="row">
+        <div class="col">{{item.attr_name}}</div>
+        <div class="col">{{item.attr_value}}</div>
+      </div>
+    </div>
+    <div class="control-box">
+      <div>
+        <span class='iconfont icon-kefu'></span>
+        联系客服
+      </div>
+      <div @click="toCart">
+        <span class='iconfont icon-gouwuche'></span>
+        购物车
+      </div>
+      <input type="button" @click="addCat" value="加入购物车">
+      <input type="button" value="立即购买">
+    </div>
+  </div>
 </template>
 
 <script>
@@ -112,11 +112,39 @@ export default {
     },
     location() {
       wx.chooseAddress({
+
         success: res => {
+          // console.log("uuuuuuu")
           this.address =
             res.provinceName + " " + res.cityName + " " + res.countyName;
         }
       });
+    },
+    //添加购物车
+    addCat() {
+      let cartData = wx.getStorageSync( 'cart' );
+      if (cartData) {
+        // console.log("有值")
+        if (cartData[this.goodsId]) {
+          cartData[this.goodsId] += 1;
+        } else {
+          cartData[this.goodsId] = 1;
+        }
+      } else {
+        // console.log("meiyou")
+        cartData = {};
+        cartData[this.goodsId] = 1;
+      }
+      wx.setStorageSync(
+        
+        "cart", cartData
+      );
+    },
+    //去购物车页面
+    
+    toCart(){
+      wx.switchTab({ url: '/pages/car/main' });
+      
     }
   }
 };
@@ -125,7 +153,7 @@ export default {
 <style scoped lang="less">
 @import url("~qs-mpvue-wxparse/src/wxParse.css");
 page {
-  background-color: red;
+  background-color: red!;
 }
 .swiper {
   height: 720rpx;
@@ -156,6 +184,7 @@ page {
 
     .name {
       display: block;
+
       font-size: 34rpx;
       color: #343434;
       line-height: 50rpx;
@@ -177,12 +206,19 @@ page {
     display: flex;
     flex-direction: column;
     flex: 1;
-    //   align-items: center;
-    //   justify-content: center;
     font-size: 30rpx;
-    //   line-height: 50rpx;
     color: #9e9e9e;
     text-align: center;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 2rpx;
+      height: 60rpx;
+      background-color: #ccc;
+      left: 15rpx;
+      top: 25rpx;
+    }
   }
 }
 .promotion {
@@ -193,11 +229,14 @@ page {
   font-size: 32rpx;
   #num {
     color: #ff2d4a;
-    padding-left: 21rpx;
+    padding-left: 20rpx;
+  }
+  #address {
+    padding-left: 10rpx;
   }
   > span:not(:first-child) {
     color: #9f9f9f;
-    padding-left: 21rpx;
+    padding-left: 20rpx;
   }
 }
 .tab {
@@ -270,7 +309,7 @@ page {
     align-items: center;
     justify-content: center;
   }
-  button {
+  input {
     width: 210rpx;
     height: 100rpx;
     color: white;
