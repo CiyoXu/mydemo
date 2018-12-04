@@ -94,6 +94,11 @@ export default {
         // console.log(res)
         this.goodsInfo = res.data.message;
       });
+      let addressdata = wx.getStorageSync("detailAddress");
+      if(addressdata){
+        this.address = addressdata.address
+      }
+      
   },
   methods: {
     preview(index) {
@@ -115,8 +120,18 @@ export default {
 
         success: res => {
           // console.log("uuuuuuu")
-          this.address =
+          // this.address =
+          //   res.provinceName + " " + res.cityName + " " + res.countyName;
+
+           this.address =
             res.provinceName + " " + res.cityName + " " + res.countyName;
+
+          wx.setStorage({
+            key: "detailAddress",
+            data: {
+              address: this.address
+            }
+          });
         }
       });
     },
@@ -131,7 +146,7 @@ export default {
           cartData[this.goodsId] = 1;
         }
       } else {
-        // console.log("meiyou")
+        // 缓存里没值
         cartData = {};
         cartData[this.goodsId] = 1;
       }

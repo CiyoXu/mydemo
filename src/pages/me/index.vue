@@ -2,7 +2,8 @@
   <div>
     <div class="user">
       <div class="box">
-        <button open-type="getUserInfo" @getuserinfo="user">
+        <!-- <button open-type="getUserInfo" @getuserinfo="user"> -->
+        <button open-type="getUserInfo" @click="user">
           <img class="image" :src="img" alt="">
         </button>
         <span class="iconfont icon-shezhi"></span>
@@ -56,14 +57,13 @@
           </div>
         </div>
       </div>
-      <div class="address">
-        收货地址管理
-      </div>
+    
     </div>
   </div>
 </template>
 
 <script>
+import tool from "../../utils/index";
 export default {
   data: function() {
     return {
@@ -72,10 +72,63 @@ export default {
     };
   },
   methods: {
-    user(res) {
-      //   console.log(res);
-      this.img = res.mp.detail.userInfo.avatarUrl;
-      this.text = res.mp.detail.userInfo.nickName;
+    // user(res) {
+    //     // console.log(res);
+    //   this.img = res.mp.detail.userInfo.avatarUrl;
+    //   this.text = res.mp.detail.userInfo.nickName;
+    // },
+
+    user() {
+      let code = "";
+      // userInfo中的私密信息
+      let encryptedData = "";
+      let iv = "";
+      let rawData = "";
+      let signature = "";
+      wx.login({
+        success: res => {
+          // console.log(res)
+          code = res.code;
+          // wx.getUserInfo({
+          //   success:res=>{
+          //     console.log(res)
+
+          //   }
+          // })
+          wx.getUserInfo({
+            withCredentials: true,
+            success: res => {
+              // console.log(res);
+              encryptedData = res.encryptedData;
+              iv = res.iv;
+              rawData = res.rawData;
+              signature = res.signature;
+
+              this.img = res.userInfo.avatarUrl;
+              this.text = res.userInfo.nickName;
+
+              // 调用第三方登陆
+              tool
+                .thenAjax({
+                  url: "api/public/v1/users/wxlogin",
+                  method: "post",
+                  data: {
+                    code,
+                    encryptedData,
+                    iv,
+                    rawData,
+                    signature
+                  }
+                })
+                .then(Res => {
+                  // console.log(Res);
+                  // 保存 token
+                  wx.setStorageSync("token", Res.data.message.token);
+                });
+            }
+          });
+        }
+      });
     }
   }
 };
@@ -186,7 +239,7 @@ page {
     // display: flex;
     // align-items: center;
     // justify-content: space-between;
-    
+
     .text {
       // padding-left: 32rpx;
     }
