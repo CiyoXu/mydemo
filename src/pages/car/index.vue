@@ -16,7 +16,7 @@
     <div class="list-box">
       <div class="title">
         <span class="iconfont icon-dianpu"></span>
-        优购生活馆
+        港亿文仔男
       </div>
       <!-- 商品列表 -->
       <ul class="items">
