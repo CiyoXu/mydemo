@@ -10,7 +10,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ff2d4a",
-    "navigationBarTitleText": "品忧购",
+    "navigationBarTitleText": "Demo",
     "navigationBarTextStyle": "white"	
   },
   "tabBar": {
